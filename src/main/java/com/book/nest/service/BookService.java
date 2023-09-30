@@ -1,10 +1,13 @@
 package com.book.nest.service;
 
-import com.book.nest.model.Book;
+import com.book.nest.dto.BookDto;
+import com.book.nest.dto.CreateBookRequestDto;
 import java.util.List;
 
 public interface BookService {
-    Book save(Book book);
+    BookDto save(CreateBookRequestDto bookDto);
 
-    List<Book> findAll();
+    BookDto findById(Long id);
+
+    List<BookDto> findAll();
 }

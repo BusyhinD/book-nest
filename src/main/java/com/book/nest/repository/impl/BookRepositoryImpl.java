@@ -5,6 +5,7 @@ import com.book.nest.model.Book;
 import com.book.nest.repository.BookRepository;
 import jakarta.persistence.EntityManagerFactory;
 import java.util.List;
+import java.util.Optional;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -16,7 +17,6 @@ public class BookRepositoryImpl implements BookRepository {
 
     public BookRepositoryImpl(EntityManagerFactory entityManagerFactory) {
         this.sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
-        ;
     }
 
     @Override
@@ -48,6 +48,15 @@ public class BookRepositoryImpl implements BookRepository {
                     .getResultList();
         } catch (Exception e) {
             throw new DataProcessionException("Can't get all books from db", e);
+        }
+    }
+
+    @Override
+    public Optional<Book> findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return Optional.ofNullable(session.find(Book.class, id));
+        } catch (Exception e) {
+            throw new DataProcessionException("Can't get book by id " + id, e);
         }
     }
 }
