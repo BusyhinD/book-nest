@@ -3,6 +3,7 @@ package com.book.nest.controller;
 import com.book.nest.dto.BookDto;
 import com.book.nest.dto.CreateBookRequestDto;
 import com.book.nest.service.BookService;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,7 @@ public class BookController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BookDto createBook(@RequestBody CreateBookRequestDto bookDto) {
+    public BookDto createBook(@RequestBody @Valid CreateBookRequestDto bookDto) {
         return bookService.save(bookDto);
     }
 
