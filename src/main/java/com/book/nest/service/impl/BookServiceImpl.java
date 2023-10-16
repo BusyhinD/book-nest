@@ -1,17 +1,21 @@
 package com.book.nest.service.impl;
 
 import com.book.nest.dto.BookDto;
+import com.book.nest.dto.BookPageResponseDto;
 import com.book.nest.dto.CreateBookRequestDto;
 import com.book.nest.exception.EntityNotFoundException;
 import com.book.nest.mapper.BookMapper;
 import com.book.nest.model.Book;
 import com.book.nest.repository.BookRepository;
+import com.book.nest.repository.search.PageManager;
 import com.book.nest.repository.search.SpecificationBuilder;
 import com.book.nest.service.BookService;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -40,11 +44,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> findAll(Map<String, String> searchParameters) {
-        return bookRepository.findAll(specBuilder.build(searchParameters))
-                .stream()
-                .map(bookMapper::toDto)
-                .toList();
+    public BookPageResponseDto findAll(Map<String, String> searchParameters) {
+        Pageable pageable = PageManager.getPageable(searchParameters.remove("size"),
+                searchParameters.remove("page"), searchParameters.remove("sort"));
+        return getBookPageResponseDto(
+                bookRepository.findAll(
+                        specBuilder.build(searchParameters), pageable));
     }
 
     @Override
@@ -63,5 +68,19 @@ public class BookServiceImpl implements BookService {
     @Override
     public void delete(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    private BookPageResponseDto getBookPageResponseDto(Page<Book> page) {
+        BookPageResponseDto bookPageResponseDto = new BookPageResponseDto();
+        bookPageResponseDto.setPageNumber(page.getNumber());
+        bookPageResponseDto.setPageSize(page.getSize());
+        bookPageResponseDto.setTotalPages(page.getTotalPages());
+        bookPageResponseDto.setNumberOfBooks(page.getTotalElements());
+        bookPageResponseDto.setLastPage(page.isLast());
+        bookPageResponseDto.setBookDtoList(page.getContent()
+                .stream()
+                .map(bookMapper::toDto)
+                .toList());
+        return bookPageResponseDto;
     }
 }
