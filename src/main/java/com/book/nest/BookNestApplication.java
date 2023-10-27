@@ -10,9 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @OpenAPIDefinition(
         info = @Info(
-                title = "The Best Wine Shop",
+                title = "The BookNest shop",
                 version = "1.0.0",
-                description = "Documentation for API Best World Wines shop.",
+                description = "Documentation for API BookNest shop.",
                 contact = @Contact(
                         name = "Dmytro Busyhin",
                         email = "busyhin.d@gmail.com",
