@@ -1,8 +1,8 @@
 package com.book.nest.service.impl;
 
-import com.book.nest.dto.BookDto;
-import com.book.nest.dto.BookPageResponseDto;
-import com.book.nest.dto.CreateBookRequestDto;
+import com.book.nest.dto.book.BookDto;
+import com.book.nest.dto.book.BookPageResponseDto;
+import com.book.nest.dto.book.CreateBookRequestDto;
 import com.book.nest.exception.EntityNotFoundException;
 import com.book.nest.mapper.BookMapper;
 import com.book.nest.model.Book;

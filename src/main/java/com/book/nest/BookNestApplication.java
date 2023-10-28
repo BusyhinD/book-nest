@@ -10,14 +10,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @OpenAPIDefinition(
         info = @Info(
-                title = "The Best Wine Shop",
+                title = "The BookNest shop",
                 version = "1.0.0",
-                description = "Documentation for API Best World Wines shop.",
+                description = "Documentation for API BookNest shop.",
                 contact = @Contact(
                         name = "Dmytro Busyhin",
                         email = "busyhin.d@gmail.com",
                         url = "https://github.com/BusyhinD/book-nest"),
-                license = @License(name = "License @2023", url = "")
+                license = @License(name = "License @2023")
         )
 )
 public class BookNestApplication {

@@ -1,8 +1,8 @@
 package com.book.nest.service;
 
-import com.book.nest.dto.BookDto;
-import com.book.nest.dto.BookPageResponseDto;
-import com.book.nest.dto.CreateBookRequestDto;
+import com.book.nest.dto.book.BookDto;
+import com.book.nest.dto.book.BookPageResponseDto;
+import com.book.nest.dto.book.CreateBookRequestDto;
 import java.util.List;
 import java.util.Map;
 

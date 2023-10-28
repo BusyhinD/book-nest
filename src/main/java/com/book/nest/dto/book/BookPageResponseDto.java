@@ -1,4 +1,4 @@
-package com.book.nest.dto;
+package com.book.nest.dto.book;
 
 import java.util.List;
 import lombok.Data;
