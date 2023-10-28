@@ -43,6 +43,17 @@ public class AuthenticationController {
         return userService.register(userRegistrationDto);
     }
 
+    @Operation(summary = "Login a user",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "User successfully login."
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Authentication failed: Wrong login or password."
+                    )
+            })
     @PostMapping("/login")
     public UserLoginResponseDto login(@RequestBody @Valid UserLoginRequestDto userRequestDto) {
         return authenticationService.authenticate(userRequestDto);
