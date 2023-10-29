@@ -22,7 +22,7 @@ public class JwtUtil {
         this.secret = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public UserLoginResponseDto getToken(String login) {
+    public UserLoginResponseDto generateToken(String login) {
         String token = Jwts
                 .builder()
                 .setSubject(login)
