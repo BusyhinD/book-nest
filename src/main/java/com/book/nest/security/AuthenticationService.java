@@ -18,6 +18,6 @@ public class AuthenticationService {
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userDto.getEmail(),
                         userDto.getPassword()));
-        return jwtUtil.getToken(authentication.getName());
+        return jwtUtil.generateToken(authentication.getName());
     }
 }
