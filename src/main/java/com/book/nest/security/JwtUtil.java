@@ -26,7 +26,7 @@ public class JwtUtil {
         String token = Jwts
                 .builder()
                 .setSubject(login)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(secret)
                 .compact();
@@ -36,9 +36,9 @@ public class JwtUtil {
     public boolean isValid(String token) {
         try {
             Date expiration = getClaimFromToken(token, Claims::getExpiration);
-            return expiration.after(new Date(System.currentTimeMillis()));
+            return expiration.after(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtException("Expired or invalid JWT");
+            throw new JwtException("Expired or invalid JWT", e);
         }
     }
 
