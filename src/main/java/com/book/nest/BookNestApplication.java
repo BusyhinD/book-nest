@@ -17,7 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
                         name = "Dmytro Busyhin",
                         email = "busyhin.d@gmail.com",
                         url = "https://github.com/BusyhinD/book-nest"),
-                license = @License(name = "License @2023", url = "")
+                license = @License(name = "License @2023")
         )
 )
 public class BookNestApplication {

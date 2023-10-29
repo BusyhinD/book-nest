@@ -1,15 +1,12 @@
 package com.book.nest.controller;
 
-import com.book.nest.dto.BookDto;
-import com.book.nest.dto.BookPageResponseDto;
-import com.book.nest.dto.CreateBookRequestDto;
+import com.book.nest.dto.book.BookDto;
+import com.book.nest.dto.book.BookPageResponseDto;
+import com.book.nest.dto.book.CreateBookRequestDto;
 import com.book.nest.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -17,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,12 +28,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Book management", description = "Endpoints for managing books")
 @RestController
-@RequestMapping(value = "/api/books", produces = "application/json")
+@RequestMapping(value = "/books", produces = "application/json")
 @RequiredArgsConstructor
 public class BookController {
     private final BookService bookService;
 
     @GetMapping
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get all books")
     public List<BookDto> getAll() {
@@ -43,6 +42,7 @@ public class BookController {
     }
 
     @GetMapping("/search")
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Get a page of books",
             parameters = {
                     @Parameter(in = ParameterIn.QUERY, name = "page",
@@ -63,12 +63,7 @@ public class BookController {
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Page of books found",
-                            content = {
-                                    @Content(
-                                            array = @ArraySchema(schema = @Schema(implementation =
-                                                    BookPageResponseDto.class)))
-                            }
+                            description = "Page of books found"
                     )
             }
     )
@@ -78,6 +73,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get a book by id")
     public BookDto getBookById(@PathVariable Long id) {
@@ -85,6 +81,7 @@ public class BookController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a new book")
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto bookDto) {
@@ -92,6 +89,7 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update a book by its id")
     public BookDto updateBook(@RequestBody CreateBookRequestDto bookDto, @PathVariable Long id) {
@@ -99,6 +97,7 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete a book by its id")
     public void deleteBook(@PathVariable Long id) {
