@@ -1,6 +1,7 @@
 package com.book.nest.service.impl;
 
 import com.book.nest.dto.book.BookDto;
+import com.book.nest.dto.book.BookDtoWithoutCategoryIds;
 import com.book.nest.dto.book.BookPageResponseDto;
 import com.book.nest.dto.book.CreateBookRequestDto;
 import com.book.nest.exception.EntityNotFoundException;
@@ -12,7 +13,6 @@ import com.book.nest.repository.search.SpecificationBuilder;
 import com.book.nest.service.BookService;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,8 +45,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookPageResponseDto findAll(Map<String, String> searchParameters) {
-        Pageable pageable = PageManager.getPageable(searchParameters.remove("size"),
-                searchParameters.remove("page"), searchParameters.remove("sort"));
+        Pageable pageable = PageManager.getPageable(
+                searchParameters.remove("size"),
+                searchParameters.remove("page"),
+                searchParameters.remove("sort"));
         return getBookPageResponseDto(
                 bookRepository.findAll(
                         specBuilder.build(searchParameters), pageable));
@@ -56,18 +58,20 @@ public class BookServiceImpl implements BookService {
     public BookDto update(Long id, CreateBookRequestDto bookDto) {
         Book book = bookRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Not found book with id " + id));
-        Optional.ofNullable(bookDto.getPrice()).ifPresent(book::setPrice);
-        Optional.ofNullable(bookDto.getAuthor()).ifPresent(book::setAuthor);
-        Optional.ofNullable(bookDto.getTitle()).ifPresent(book::setTitle);
-        Optional.ofNullable(bookDto.getIsbn()).ifPresent(book::setIsbn);
-        Optional.ofNullable(bookDto.getDescription()).ifPresent(book::setDescription);
-        Optional.ofNullable(bookDto.getCoverImage()).ifPresent(book::setCoverImage);
-        return bookMapper.toDto(bookRepository.save(book));
+        return bookMapper.toDto(bookRepository.save(bookMapper.update(book, bookDto)));
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public List<BookDtoWithoutCategoryIds> getAllBooksByCategoryId(Long id) {
+        return bookRepository.findAllByCategoryId(id)
+                .stream()
+                .map(bookMapper::toDtoWithoutCategoryIds)
+                .toList();
     }
 
     private BookPageResponseDto getBookPageResponseDto(Page<Book> page) {
