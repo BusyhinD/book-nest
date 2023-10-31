@@ -8,7 +8,7 @@ public interface CategoryService {
 
     CategoryDto findById(Long id);
 
-    List<CategoryDto> findALl();
+    List<CategoryDto> findAll();
 
     CategoryDto update(Long id, CategoryDto categoryDto);
 

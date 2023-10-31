@@ -34,7 +34,7 @@ public class CategoryController {
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Get all categories")
     public List<CategoryDto> getAll() {
-        return categoryService.findALl();
+        return categoryService.findAll();
     }
 
     @GetMapping("/{id}")
