@@ -43,6 +43,7 @@ public class BookController {
 
     @GetMapping("/search")
     @PreAuthorize("hasRole('USER')")
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get a page of books",
             parameters = {
                     @Parameter(in = ParameterIn.QUERY, name = "page",
@@ -91,7 +92,7 @@ public class BookController {
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Update a book by its id")
+    @Operation(summary = "Update a book by its id and a BookDto")
     public BookDto updateBook(@RequestBody CreateBookRequestDto bookDto, @PathVariable Long id) {
         return bookService.update(id, bookDto);
     }
@@ -100,7 +101,7 @@ public class BookController {
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete a book by its id")
-    public void deleteBook(@PathVariable Long id) {
-        bookService.delete(id);
+    public void deleteBookById(@PathVariable Long id) {
+        bookService.deleteById(id);
     }
 }

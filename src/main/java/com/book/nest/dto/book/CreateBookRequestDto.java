@@ -2,7 +2,9 @@ package com.book.nest.dto.book;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
+import java.util.Set;
 import lombok.Data;
 
 @Data
@@ -19,4 +21,6 @@ public class CreateBookRequestDto {
     private String description;
     @NotBlank
     private String coverImage;
+    @NotEmpty
+    private Set<Long> categoryIds;
 }

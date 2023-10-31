@@ -1,6 +1,7 @@
 package com.book.nest.service;
 
 import com.book.nest.dto.book.BookDto;
+import com.book.nest.dto.book.BookDtoWithoutCategoryIds;
 import com.book.nest.dto.book.BookPageResponseDto;
 import com.book.nest.dto.book.CreateBookRequestDto;
 import java.util.List;
@@ -17,5 +18,7 @@ public interface BookService {
 
     BookDto update(Long id, CreateBookRequestDto bookDto);
 
-    void delete(Long id);
+    void deleteById(Long id);
+
+    List<BookDtoWithoutCategoryIds> getAllBooksByCategoryId(Long id);
 }
